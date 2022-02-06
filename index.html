@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Car game</title>
+</head>
+<body>
+    <div id="road"></div>
+    <div id="car"></div>
+    <button id="left" onclick="left()"><</button>
+        <button id="right" onclick="right()">></button>
+        <div id="car2" class="car2c"></div>
+        <div id="scr">
+            0
+        </div>
+        <style>
+            body {
+                background: lightgreen;
+            }
+            #road {
+                width: 160px;
+                height: 701px;
+                background: #363636;
+                position: absolute;
+                left: 430;
+            }
+            #car {
+                width: 40px;
+                height: 40px;
+                background-color: red;
+                position: absolute;
+                left: 0px;
+                top: 0px;
+            }
+            #car2 {
+                width: 40px;
+                height: 40px;
+                background-color: blue;
+                position: absolute;
+                left: 0px;
+                top: 0px;
+            }
+            .car2c {
+                animation: carrun 1s linear infinite;
+            }
+            #left {
+                width: 100px;
+                height: 100px;
+                position: absolute;
+                left: 330px;
+                top: 300px;
+                font-size: 50px;
+            }
+
+            #right {
+                width: 100px;
+                height: 100px;
+                position: absolute;
+                left: 590px;
+                top: 300px;
+                font-size: 50px;
+            }
+            @keyframes carrun {
+                0% {
+                    top: 0px;
+                }
+                100% {
+                    top: 700px;
+                }
+            }
+        </style>
+        <script>
+            //welcome script
+            let player = document.getElementById("car");
+            let x = 440;
+            let y = 400
+            player.style.left = x + "px";
+            player.style.top = y + "px";
+            alert("this is my first html game and try not to collide with car 2!!")
+            let save = prompt("wright r to not to get instantly kill");
+            if (save == "r"){
+                x = 440 + 50;
+                player.style.left = x + "px";
+            }
+            ded = false
+            //script for road
+            let road = document.getElementById("road");
+            road.style.left = 430 + "px";
+            playerroad = 0;
+            player2road = 0;
+            //script for score
+            let score = document.getElementById("scr");
+            let cntr = 0;
+            score.innerHTML = cntr;
+            //player movement script
+            color = ["red", "black", "gray", "blue"]
+            function left () {
+                if (player.style.left == 490 + "px") {
+                    x = 440;
+                    player.style.left = x + "px";
+                }
+                if (player.style.left == 490 + 50 + "px") {
+                    x = 490 + "px"
+                    player.style.left = x;
+                }
+
+            }
+            function right () {
+                if (player.style.left == 440 + "px") {
+                    x = 440 + 50;
+                    player.style.left = x + "px";
+                } else if (player.style.left == 490 + "px") {
+                    x = 490 + 50;
+                    player.style.left = x + "px";
+                }
+            }
+            window.addEventListener("keydown", (ev) => {
+                if (ev.key == "ArrowLeft") {
+                    left()
+                }
+                if (ev.key == "ArrowRight") {
+                    right()
+                }
+            });
+            //other car script
+            let player2 = document.getElementById("car2");
+            player2.style.backgroundColor = color[4];
+            let x_a = 440;
+            let y_a = 360;
+            player2.style.left = x_a + "px";
+            player2.style.top = y_a + "px";
+            setInterval(randpos, 1000)
+            function randpos () {
+                player2.style.backgroundColor = color[Math.floor(Math.random() * 4)];
+                player2.style.top = 0 + "px";
+                let pos = Math.floor(Math.random() * 3);
+                player2road = pos
+                if (pos == 0) {
+                    player2.style.left = 440 + "px";
+                } else if (pos == 1) {
+                    player2.style.left = 440 + 50 + "px";
+                } else if (pos == 2) {
+                    player2.style.left = 490 + 50 + "px";
+                }
+                cntr++
+                cntr - 1
+                score.innerHTML = cntr;
+            }
+            //colision
+            setInterval(function () {
+                let playercs = window.getComputedStyle(player)
+                let player2cs = window.getComputedStyle(player2)
+                if (playercs.left == player2cs.left) {
+                    if (player2cs.top > 380.000 + "px" && player2cs.top < 420.000 + "px") {
+                        alert("gameOver your Score:" + cntr)
+                        player2.style.left = 400 + 50 + "px";
+                        player2.classList.remove("car2c");
+                        ded = true;
+                        alert("click ok to restart")
+                        cntr = 0;
+                        cntr - 1;
+                        score.innerHTML = cntr;
+                        player2.classList.add("car2c")
+                    }
+                }
+            }, 0.0001)
+        </script>
+    </body>
+</html>
